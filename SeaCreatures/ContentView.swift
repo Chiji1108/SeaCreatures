@@ -10,14 +10,44 @@ import RealityKitContent
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        VStack {
-            Model3D(named: "SlugScene", bundle: realityKitContentBundle)
-                .padding(.bottom, 50)
+    @State private var selectedCreature: SeaCreature?
 
-            Text("Hello, world!")
+    private var seaCreatures: [SeaCreature] = [
+        SeaCreature(name: "Clam", modelName: "ClamScene"),
+        SeaCreature(name: "Fish", modelName: "FishScene"),
+        SeaCreature(name: "Slug", modelName: "SlugScene"),
+        SeaCreature(name: "Starfish", modelName: "StarfishScene"),
+    ]
+
+    var body: some View {
+        NavigationSplitView {
+            List(seaCreatures) { creature in
+                Button(
+                    action: {
+                        selectedCreature = creature
+                    },
+                    label: {
+                        Text(creature.name)
+                    })
+            }
+            .navigationTitle("Sea Creatures")
+        } detail: {
+            if let selectedCreature {
+                Model3D(named: selectedCreature.modelName, bundle: realityKitContentBundle)
+                    .navigationTitle(selectedCreature.name)
+                    .toolbar {
+                        Button(
+                            action: {
+
+                            },
+                            label: {
+                                Text("View \(selectedCreature.name)")
+                            })
+                    }
+            } else {
+                Text("Select a sea creature")
+            }
         }
-        .padding()
     }
 }
 
