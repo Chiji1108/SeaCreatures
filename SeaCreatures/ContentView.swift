@@ -10,6 +10,7 @@ import RealityKitContent
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.openWindow) private var openWindow
     @State private var selectedCreature: SeaCreature?
 
     private var seaCreatures: [SeaCreature] = [
@@ -38,7 +39,7 @@ struct ContentView: View {
                     .toolbar {
                         Button(
                             action: {
-
+                                openWindow(id: "creatureWindow", value: selectedCreature.modelName)
                             },
                             label: {
                                 Text("View \(selectedCreature.name)")
